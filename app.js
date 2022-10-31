@@ -1,51 +1,80 @@
 const choices = ["rock", "paper", "scissors"];
 let playerScore = 0;
 let computerScore = 0;
+let numberOfRounds = 0;
+const playButtons = document.querySelectorAll(".play-btn");
+const resultsDiv = document.querySelector(".results");
+const newGameBtn = document.querySelector("#newGame");
 
 
 function getComputerChoice() {
     return choices[Math.floor(Math.random() * choices.length)];
 }
 
+function disableBtn() {
+    playButtons.forEach(btn => {
+        btn.disabled = true;
+    });
+}
+
 function playRound(playerSelection, computerSelection) {
+    if (computerScore === 5) {
+        const h3 = document.createElement("h3");
+        h3.textContent = "GAME OVER! Computer won!";
+        resultsDiv.appendChild(h3);
+        disableBtn();
+        return;
+    }
+    if (playerScore === 5) {
+        const h3 = document.createElement("h3");
+        h3.textContent = "GAME OVER! You won!";
+        resultsDiv.appendChild(h3);
+        disableBtn();
+        return;
+    }
     if (playerSelection.toLowerCase() === computerSelection) {
-        return "It's a tie!";
-    } 
-  
-    if ((playerSelection.toLowerCase() === "rock" && computerSelection === "paper") ||
+        numberOfRounds++;
+        const h4 = document.createElement("h4");
+        h4.textContent = `Round ${numberOfRounds}: It's a tie!`;
+        resultsDiv.appendChild(h4);
+    }
+
+    else if ((playerSelection.toLowerCase() === "rock" && computerSelection === "paper") ||
         (playerSelection.toLowerCase() === "paper" && computerSelection === "scissors") ||
         (playerSelection.toLowerCase() === "scissors" && computerSelection === "rock")) {
         computerScore++;
-        return "Computer has won!";
+        numberOfRounds++;
+        const h4 = document.createElement("h4");
+        h4.textContent = `Round ${numberOfRounds}: Computer won this one!`;
+        resultsDiv.appendChild(h4);
+    } else {
+        numberOfRounds++;
+        playerScore++;
+        const h4 = document.createElement("h4");
+        h4.textContent = `Round ${numberOfRounds}: You have won!`;
+        resultsDiv.appendChild(h4);
     }
-    playerScore++;
-    return "You have won!";
-    
+
 }
 
-function resetScores() {
+function setNewGame() {
+    resultsDiv.replaceChildren();
     playerScore = 0;
     computerScore = 0;
+    numberOfRounds = 0;
+    playButtons.forEach(btn => {
+        btn.disabled = false;
+    });
 }
 
-function game() {
-    resetScores();
-    for (let i = 0; i < 5; i++){
-       let playerSelection = prompt("Enter your choice:");
-        while (!choices.includes(playerSelection)) {
-            playerSelection = prompt("Enter valid choice:");
-        }
+
+
+playButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
         const computerSelection = getComputerChoice();
-        console.log(playRound(playerSelection, computerSelection));
-    }
-    if (playerScore > computerScore) {
-        console.log("You have won");
-    } else if (computerScore > playerScore) {
-        console.log("You lost. Computer does this better");
-    } else {
-        console.log("It's a tie!");
-    }
-}
+        playRound(btn.id, computerSelection);
+    });
+});
 
 
-game();
+newGameBtn.addEventListener("click", setNewGame);
