@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,26 +18,17 @@ button {
     box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.3);
 }
 
-button:active {
+button:enabled:active {
     transform: translate(2px, 2px);
 }
 
-h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: rgb(175, 102, 42);
-}
-
-h4 {
-    font-size: 1.1rem;
-    font-weight: 400;
-    color: rgb(175, 148, 42);
+button:disabled {
+    background-color: grey;
 }
 
 .container {
-    margin-top: 100px;
     width: 600px;
-    height: auto;
+    height: 210px;
     padding: 5px;
 }
 
@@ -53,4 +45,17 @@ h4 {
 
 .results {
     text-align: center;
+}
+
+.results div {
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+    color: rgb(116, 67, 23);
+    margin: 20px auto;
+}
+
+#final-result {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: rgb(85, 47, 13);
 }
